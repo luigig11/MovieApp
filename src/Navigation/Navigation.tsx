@@ -9,7 +9,7 @@ export const Navigation = () => {
   return (
     <Stack.Navigator
         screenOptions={{
-            headerShown: false, /* To not show header */
+            headerShown: false, /* To hide header */
             cardStyle: {
                 backgroundColor: 'white'
             }

@@ -4,28 +4,33 @@ import { Movie } from '../interfaces/movieInterface';
 
 interface Props {
     movie: Movie;
+    height?: number;
+    width?: number;
 }
+/* const { height , width } = useWindowDimensions(); */
 
-export const MoviePoster = ({ movie }: Props) => {
+export const MoviePoster = ({
+    movie,
+    height = useWindowDimensions().height * 0.51,
+    width = useWindowDimensions().width * 0.7
+}: Props) => {
 
-    const { height, width } = useWindowDimensions();
-    
+    /* const { height, width } = useWindowDimensions(); */
+
     const IMAGE_URI = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
 
 
     return (
         <View style={{
-            width: width * 0.7,
-            height: height * 0.6
+            width,
+            height,
+            marginHorizontal: 4
         }}>
             <View style={styles.imageContainer}>
                 <Image
                     source={{ uri: IMAGE_URI }}
                     style={[
-                        styles.image,
-                        {
-
-                        }
+                        styles.image
                     ]}
                 />
             </View>
@@ -41,7 +46,7 @@ const styles = StyleSheet.create({
     }, */
     image: {
         flex: 1,
-        borderRadius: 18,
+        borderRadius: 18,        
         /* top: 10,
         marginRight: 6,
         marginBottom: 14  */
@@ -49,8 +54,8 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         flex: 1,
-        borderRadius: 18,
-        elevation: 5,
+        borderRadius: 18,        
+        /* elevation: 5, */
         /* shadowColor: '#000', this property only works fr Android API 28 or higher*/
         /* All these properties only works in IOS
          shadowOffset: {
