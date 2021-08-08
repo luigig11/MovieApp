@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import movieDB from '../api/movieDB';
 import { MoviePoster } from '../components/MoviePoster';
 import { useMovies } from '../hooks/useMovies';
-import { MovieDBMoviesResponses } from '../interfaces/movieInterface';
 import Carousel from 'react-native-snap-carousel';
 import { HorizontalSlider } from '../components/HorizontalSlider';
 
@@ -37,9 +35,9 @@ export const HomeScreen = () => {
                 </View>
 
                 {/* popular movies */}
-                <HorizontalSlider title={'Popular'} movies={popular!} />
-                <HorizontalSlider title={'Top Rated'} movies={topRated!} />
-                <HorizontalSlider title={'UpComing'} movies={upComing!} />
+                <HorizontalSlider title={'Popular'} movies={popular} />
+                <HorizontalSlider title={'Top Rated'} movies={topRated} />
+                <HorizontalSlider title={'UpComing'} movies={upComing} />
                 
             </View>
         </ScrollView>

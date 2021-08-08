@@ -12,7 +12,12 @@ interface MoviesState {
 export const useMovies = () => {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [moviesState, setMoviesState] = useState<MoviesState>();
+    const [moviesState, setMoviesState] = useState<MoviesState>({
+        nowPlaying: [],
+        popular:    [],
+        topRated:   [],
+        upComing:   [],
+    });
     
 
     const getMovies = async () => {
@@ -24,8 +29,8 @@ export const useMovies = () => {
         const responses = await Promise.all([
             nowPlayingPromise,
             popularPromise,
-           topRatedPromise, 
-             upcomingPromise
+            topRatedPromise, 
+            upcomingPromise
         ]);
         
         setMoviesState({

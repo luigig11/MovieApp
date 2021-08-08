@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { Movie } from '../interfaces/movieInterface';
 
 interface Props {
@@ -18,14 +19,19 @@ export const MoviePoster = ({
     /* const { height, width } = useWindowDimensions(); */
 
     const IMAGE_URI = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
-
+    const navigation = useNavigation();
 
     return (
-        <View style={{
-            width,
-            height,
-            marginHorizontal: 4
-        }}>
+        <TouchableOpacity
+            onPress={() => navigation.navigate('DetailScreen', movie)}
+            activeOpacity={0.8}
+            style={{
+                width,
+                height,
+                marginHorizontal: 2,
+                paddingBottom: 20,
+                paddingHorizontal: 5
+            }}>
             <View style={styles.imageContainer}>
                 <Image
                     source={{ uri: IMAGE_URI }}
@@ -35,7 +41,7 @@ export const MoviePoster = ({
                 />
             </View>
 
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -46,7 +52,7 @@ const styles = StyleSheet.create({
     }, */
     image: {
         flex: 1,
-        borderRadius: 18,        
+        borderRadius: 18,
         /* top: 10,
         marginRight: 6,
         marginBottom: 14  */
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         flex: 1,
-        borderRadius: 18,        
+        borderRadius: 18,
         /* elevation: 5, */
         /* shadowColor: '#000', this property only works fr Android API 28 or higher*/
         /* All these properties only works in IOS
