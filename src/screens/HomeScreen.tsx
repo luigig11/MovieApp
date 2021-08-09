@@ -1,16 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ActivityIndicator, ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MoviePoster } from '../components/MoviePoster';
 import { useMovies } from '../hooks/useMovies';
 import Carousel from 'react-native-snap-carousel';
 import { HorizontalSlider } from '../components/HorizontalSlider';
+import { GradientBackground } from '../components/GradientBackground';
+import ImageColors from 'react-native-image-colors'
+import { getImageColors } from '../helpers/getColors';
+import { GradientContext } from '../context/GradientContext';
 
 export const HomeScreen = () => {
 
-    const { nowPlaying, popular, topRated  , upComing, isLoading } = useMovies();
+    const { nowPlaying, popular, topRated, upComing, isLoading } = useMovies();
     const { top } = useSafeAreaInsets();
     const { width, height } = useWindowDimensions();
+
+    const {setMainColors} = useContext(GradientContext);
+
+    const getPosterColors = async (index: number) => {
+        const movie = nowPlaying[index];
+        const uri = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+        
+        const [primary = 'green', secondary = 'orange'] = await getImageColors(uri);
+        setMainColors({primary, secondary});
+        
+    }
+
+    useEffect(() => {
+        if (nowPlaying.length > 0) {
+            getPosterColors(0);
+        }
+    }, [nowPlaying])
 
     if (isLoading) {
         return (
@@ -20,26 +41,31 @@ export const HomeScreen = () => {
         )
 
     }
-    
-    return (
-        <ScrollView>
-            <View style={{ marginTop: top + 20 }}>
-                {/* main carousel */}
-                <View style={{ width: (width * 0.7) + 20, height: (height * 0.53) }}>
-                    <Carousel
-                        data={nowPlaying!}
-                        renderItem={({ item }: any) => <MoviePoster movie={item} />}
-                        sliderWidth={width}
-                        itemWidth={300}
-                    />
-                </View>
 
-                {/* popular movies */}
-                <HorizontalSlider title={'Popular'} movies={popular} />
-                <HorizontalSlider title={'Top Rated'} movies={topRated} />
-                <HorizontalSlider title={'UpComing'} movies={upComing} />
-                
-            </View>
-        </ScrollView>
+    return (
+        <GradientBackground>
+
+            <ScrollView>
+                <View style={{ marginTop: top + 20 }}>
+                    {/* main carousel */}
+                    <View style={{ width: (width * 0.7) + 20, height: (height * 0.53) }}>
+                        <Carousel
+                            data={nowPlaying!}
+                            renderItem={({ item }: any) => <MoviePoster movie={item} />}
+                            sliderWidth={width}
+                            itemWidth={300}
+                            onSnapToItem={ index => getPosterColors(index) }
+                        />
+                    </View>
+
+                    {/* popular movies */}
+                    <HorizontalSlider title={'Popular'} movies={popular} />
+                    <HorizontalSlider title={'Top Rated'} movies={topRated} />
+                    <HorizontalSlider title={'UpComing'} movies={upComing} />
+
+                </View>
+            </ScrollView>
+            
+        </GradientBackground>
     )
 }
